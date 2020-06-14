@@ -50,7 +50,7 @@
           <configuration>
             <tag>1.0</tag>
             <dockerfile>Dockerfile</dockerfile>
-            <repository>docker-based-logger-simulator/${project.artifactId}</repository>
+            <repository>markmfreelancer/docker-based-logger-simulator</repository>
             <username>${docker.username}</username>
             <password>${docker.password}</password>
           </configuration>
