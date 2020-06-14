@@ -27,4 +27,4 @@ steps:
     jdkVersionOption: '1.8'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'clean intall -PbuildImage'
+    goals: 'clean install -PbuildImage'
