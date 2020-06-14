@@ -1,4 +1,4 @@
-FROM openjdk:11.0.2-jdk-slim
+FROM openjdk:15-jdk-alpine3.11
 
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency
