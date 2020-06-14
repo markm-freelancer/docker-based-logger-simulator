@@ -9,6 +9,12 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+- name: MAVEN_CACHE_FOLDER
+  value: $(Pipeline.Workspace)/.m2/repository
+- name: MAVEN_OPTS
+  value: -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)
+
 steps:
 - task: Cache@2
   inputs:
@@ -22,7 +28,7 @@ steps:
   displayName: Build project
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+    mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
@@ -33,7 +39,7 @@ steps:
   displayName: Build docker image
   inputs:
     mavenPomFile: 'dbls-app/pom.xml'
-    mavenOptions: '-Xmx3072m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+    mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     publishJUnitResults: true
