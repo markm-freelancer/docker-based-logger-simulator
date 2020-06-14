@@ -16,14 +16,15 @@ variables:
   value: -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)
 
 steps:
-- task: Cache@2
-  inputs:
-    key: 'maven | "$(Agent.OS)"'
-    restoreKeys: |
-       maven | "$(Agent.OS)"
-       maven
-    path: $(Pipeline.Workspace)/.m2/repository
-  displayName: Cache Maven repository
+# Cannot get this to work
+#- task: Cache@2
+#  inputs:
+#    key: 'maven | "$(Agent.OS)"'
+#    restoreKeys: |
+#       maven | "$(Agent.OS)"
+#       maven
+#    path: $(Pipeline.Workspace)/.m2/repository
+#  displayName: Cache Maven repository
 - task: Maven@3
   displayName: Build project
   inputs:
