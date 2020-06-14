@@ -10,7 +10,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: Cache@2
+  inputs:
+    key: 'maven | "$(Agent.OS)"'
+    restoreKeys: |
+       maven | "$(Agent.OS)"
+       maven
+    path: $(MAVEN_CACHE_FOLDER)
+  displayName: Cache Maven repository
 - task: Maven@3
+  displayName: Build project
   inputs:
     mavenPomFile: 'pom.xml'
     mavenOptions: '-Xmx3072m'
@@ -21,6 +30,7 @@ steps:
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'clean install'
 - task: Maven@3
+  displayName: Build docker image
   inputs:
     mavenPomFile: 'dbls-app/pom.xml'
     javaHomeOption: 'JDKVersion'

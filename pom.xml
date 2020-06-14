@@ -15,7 +15,6 @@
   </parent>
 
   <properties>
-    <docker.repo>hub.docker.com</docker.repo>
     <docker.username>markmfreelancer</docker.username>
     <docker.password>markmfreelancer!@#</docker.password>
   </properties>
@@ -51,7 +50,7 @@
           <configuration>
             <tag>1.0</tag>
             <dockerfile>Dockerfile</dockerfile>
-            <repository>${docker.repo}/docker-based-logger-simulator/${project.artifactId}</repository>
+            <repository>docker-based-logger-simulator/${project.artifactId}</repository>
             <username>${docker.username}</username>
             <password>${docker.password}</password>
           </configuration>
