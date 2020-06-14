@@ -16,13 +16,13 @@ steps:
     restoreKeys: |
        maven | "$(Agent.OS)"
        maven
-    path: $(MAVEN_CACHE_FOLDER)
+    path: $(Pipeline.Workspace)/.m2/repository
   displayName: Cache Maven repository
 - task: Maven@3
   displayName: Build project
   inputs:
     mavenPomFile: 'pom.xml'
-    mavenOptions: '-Xmx3072m'
+    mavenOptions: '-Xmx3072m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
@@ -33,6 +33,7 @@ steps:
   displayName: Build docker image
   inputs:
     mavenPomFile: 'dbls-app/pom.xml'
+    mavenOptions: '-Xmx3072m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     publishJUnitResults: true

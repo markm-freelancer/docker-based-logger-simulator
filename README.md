@@ -1,7 +1,9 @@
 # Docker-based Logger Simulator
 
 ## To run as a docker image
-
+```
+docker run -p 8080:8080 markmfreelancer/docker-based-logger-simulator:1.0
+```
 ## To build
 - Required software
    - Java
