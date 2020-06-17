@@ -30,6 +30,7 @@ public class PersistentDataRepositoryImpl implements PersistentDataRepository {
 
     @Autowired
     private Environment env;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -83,6 +84,11 @@ public class PersistentDataRepositoryImpl implements PersistentDataRepository {
     @Override
     public String getConfigurationProperty(String key) {
         return env.getRequiredProperty("configuration." + key);
+    }
+
+    @Override
+    public String getSystemProperty(String key) {
+        return System.getenv(key);
     }
 
 }

@@ -22,5 +22,14 @@ public class Maplike extends ArrayList<Maplike.Entrylike> {
     public Entrylike get(String key) {
         return this.stream().filter(e -> e.getName().equals(key)).findFirst().orElse(null);
     }
+    public void put(String key, String value) {
+        Entrylike presentValue = get(key);
+        if (null != presentValue) {
+            presentValue.setValue(value);
+        } else {
+            Entrylike newEntry = new Entrylike(key, value);
+            this.add(newEntry);
+        }
+    }
 }
 

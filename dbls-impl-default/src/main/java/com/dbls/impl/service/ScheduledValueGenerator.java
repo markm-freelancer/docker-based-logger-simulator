@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoField;
 import java.util.Date;
+import java.util.concurrent.ScheduledFuture;
 
 import javax.annotation.PostConstruct;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 import com.dbls.api.service.PersistentDataRepository;
 
 import lombok.extern.slf4j.Slf4j;
+import static com.dbls.api.service.PersistentDataRepository.*;
 
 @Slf4j
 @Component
@@ -33,21 +35,27 @@ public class ScheduledValueGenerator {
     @Value("${configuration.generator-interval:1000}")
     private long interval;
 
+    private ScheduledFuture<?> task;
+
     @PostConstruct
     public void startTask() {
+        if (null != task) {
+            throw new IllegalStateException("Task is already scheduled!");
+        }
+
         String savedInterval = dataRepository.getData(PersistentDataRepository.KEY_INTERVAL);
         if (null != savedInterval) {
             this.interval = Long.parseLong(savedInterval);
         }
-        log.info("Starging value generation task. interval={} ms", interval);
-        scheduler.schedule(this::generateValues, this::nextRun);
+        log.info("Starting value generation task. interval={} ms", interval);
+        this.task = scheduler.schedule(this::generateValues, this::nextRun);
     }
 
     private void generateValues() {
         long v1 = RNG.nextLong(0L, 1000L);
         long v2 = RNG.nextLong(0, 1000L);
-        dataRepository.putData("GENERATED_VALUE_ONE", String.valueOf(v1));
-        dataRepository.putData("GENERATED_VALUE_TWO", String.valueOf(v2));
+        dataRepository.putData(KEY_GENERATED_VALUE_ONE, String.valueOf(v1));
+        dataRepository.putData(KEY_GENERATED_VALUE_ONE, String.valueOf(v2));
         try {
             dataRepository.saveData();
         } catch (IOException e) {
@@ -64,6 +72,10 @@ public class ScheduledValueGenerator {
     public void updateInterval(long interval) {
         log.info("Updating interval. new interval={}", interval);
         this.interval = interval;
+    }
+
+    public long getInterval() {
+        return this.interval;
     }
 
 }

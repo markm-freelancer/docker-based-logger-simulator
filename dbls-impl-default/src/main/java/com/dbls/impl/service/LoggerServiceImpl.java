@@ -39,13 +39,13 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public LoggerStatusResponse loggerStatus() {
-        String uuid = System.getenv("DEVICE_UUID");
+        String uuid = dataRepository.getSystemProperty(KEY_DEVICE_ID);
         if (null == uuid) {
-            uuid = dataRepository.getConfigurationProperty("DEVICE_UUID");
+            uuid = dataRepository.getConfigurationProperty(KEY_DEVICE_ID);
         }
-        String status = System.getenv("DEVICE_STATUS");
+        String status = dataRepository.getSystemProperty(KEY_DEVICE_STATUS);
         if (null == status) {
-            status = dataRepository.getConfigurationProperty("DEVICE_STATUS");
+            status = dataRepository.getConfigurationProperty(KEY_DEVICE_STATUS);
         }
         return new LoggerStatusResponse(uuid, status);
     }
@@ -148,9 +148,8 @@ public class LoggerServiceImpl implements LoggerService {
 
     @Override
     public CurrentTimingResponse getCurrentTiming() {
-        long interval = Long.parseLong(dataRepository.getData(PersistentDataRepository.KEY_INTERVAL, "0"));
         CurrentTimingResponse response = new CurrentTimingResponse();
-        response.setInterval(interval);
+        response.setInterval(scheduledValueGenerator.getInterval());
         return response;
     }
 
