@@ -48,7 +48,7 @@
           <artifactId>dockerfile-maven-plugin</artifactId>
           <version>1.4.13</version>
           <configuration>
-            <tag>1.0</tag>
+            <tag>${project.version}</tag>
             <dockerfile>Dockerfile</dockerfile>
             <repository>markmfreelancer/docker-based-logger-simulator</repository>
             <username>${docker.username}</username>
