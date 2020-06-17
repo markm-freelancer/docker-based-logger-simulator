@@ -9,8 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.dbls.api.dto.CurrentStateResponse;
 import com.dbls.api.dto.LoggerStatusResponse;
 import com.dbls.api.dto.NewShiftsRequest;
 import com.dbls.api.dto.NewShiftsResponse;
@@ -56,10 +54,11 @@ public class LoggerResourceTest {
 
     @Test
     public void loggerStatus() throws Exception {
-        Map<String, String> macAddresses = new HashMap<>();
-        macAddresses.put("eth0", "01-02-03-04-05-06");
+        String uuid = UUID.randomUUID().toString();
+
         LoggerStatusResponse response = new LoggerStatusResponse();
-        response.setMacAddresses(macAddresses);
+        response.setId(uuid);
+        response.setStatus("OK");
         when(service.loggerStatus()).thenReturn(response);
 
         MockHttpServletRequestBuilder builder = get("/logger_status")
@@ -71,40 +70,17 @@ public class LoggerResourceTest {
             .perform(builder)
             .andDo(print())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.macAddresses.eth0").value("01-02-03-04-05-06"))
+            .andExpect(jsonPath("$.id").value(uuid))
             .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void whenCurrentState_ThenReturnDto() throws Exception {
-        CurrentStateResponse response = new CurrentStateResponse();
-        response.setPressure(12d);
-        response.setTemperature(35.5d);
-        response.setVolume(80d);
-        response.setWeight(16d);
-        response.setStatus("Normal");
-        when(service.currentState()).thenReturn(response);
-
-        MockHttpServletRequestBuilder builder = get("/current_state")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .characterEncoding("UTF-8");
-
-        mockMvc
-            .perform(builder)
-            .andDo(print())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.status").value("Normal"))
-            .andExpect(jsonPath("$.pressure").value("12.0"))
-            .andExpect(jsonPath("$.volume").value("80.0"))
-            .andExpect(jsonPath("$.weight").value("16.0"))
-            .andExpect(jsonPath("$.temperature").value("35.5"))
-            .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void whenNewShifts_ThenReturnOk() throws Exception {
-        NewShiftsRequest request = new NewShiftsRequest();
+        NewShiftsRequest request = new NewShiftsRequest("03:00", "05:00", "11:00", "14:00", "23:00", "02:00");
         String body = objectMapper.writeValueAsString(request);
 
         NewShiftsResponse response = new NewShiftsResponse();

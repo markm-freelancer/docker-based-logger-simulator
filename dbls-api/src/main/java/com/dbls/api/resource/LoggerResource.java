@@ -1,5 +1,7 @@
 package com.dbls.api.resource;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbls.api.dto.CurrentShiftsResponse;
 import com.dbls.api.dto.CurrentStateResponse;
+import com.dbls.api.dto.CurrentTimingResponse;
 import com.dbls.api.dto.LoggerStatusResponse;
 import com.dbls.api.dto.NewShiftsRequest;
 import com.dbls.api.dto.NewShiftsResponse;
@@ -32,8 +36,13 @@ public class LoggerResource {
     }
 
     @PostMapping("/new_shifts")
-    public ResponseEntity<NewShiftsResponse> newShifts(@RequestBody NewShiftsRequest request) {
+    public ResponseEntity<NewShiftsResponse> newShifts(@RequestBody NewShiftsRequest request) throws IOException {
         return ResponseEntity.ok(service.newShifts(request));
+    }
+
+    @GetMapping("/current_shifts")
+    public ResponseEntity<CurrentShiftsResponse> currentShifts() {
+        return ResponseEntity.ok(service.getCurrentShifts());
     }
 
     @PostMapping("/new_timing")
@@ -41,4 +50,8 @@ public class LoggerResource {
         return ResponseEntity.ok(service.newTiming(request));
     }
 
+    @GetMapping("/current_timing")
+    public ResponseEntity<CurrentTimingResponse> currentTiming() {
+        return ResponseEntity.ok(service.getCurrentTiming());
+    }
 }

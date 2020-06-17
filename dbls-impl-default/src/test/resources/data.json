@@ -1,0 +1,10 @@
+{
+  "GENERATED_VALUE_ONE" : "123",
+  "GENERATED_VALUE_TWO" : "456",
+  "shiftOneStart" : "03:00",
+  "shiftOneEnd" : "05:00",
+  "shiftTwoStart" : "11:00",
+  "shiftTwoEnd" : "14:00",
+  "shiftThreeStart" : "23:00",
+  "shiftThreeEnd" : "02:00"
+}

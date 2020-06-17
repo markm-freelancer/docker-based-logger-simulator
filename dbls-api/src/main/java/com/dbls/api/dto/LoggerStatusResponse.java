@@ -1,17 +1,14 @@
 package com.dbls.api.dto;
 
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor @AllArgsConstructor
 public class LoggerStatusResponse {
 
-    private Map<String, String> macAddresses;
-
-    public Map<String, String> getMacAddresses() {
-        return macAddresses;
-    }
-
-    public void setMacAddresses(Map<String, String> macAddresses) {
-        this.macAddresses = macAddresses;
-    }
+    private String id;
+    private String status;
 
 }

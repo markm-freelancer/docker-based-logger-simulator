@@ -1,15 +1,12 @@
 package com.dbls.api.dto;
 
+import lombok.Data;
+
+@Data
 public class NewTimingResponse {
 
+    public static final String STATUS_OK = "OK";
+
     private String status;
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
 }
