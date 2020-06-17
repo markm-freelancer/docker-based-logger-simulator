@@ -32,7 +32,21 @@ The response changes to
 }
 ```
 
+## To run as a docker image & use an external save file (data persists even when image is terminated)
+
+```
+docker run -p 8080:8080 -v /home/mbmartinez/test/data.json:/data.json markmfreelancer/docker-based-logger-simulator:2.0
+```
+
+Note that ```/home/mbmartinez/test/data.json``` needs to be replaced with your own data.json absolute path.
+
 ## To run as a docker image & override spring-boot configuration
+Similar to mounting data.json, it's also possible to mount a custom application.yml configuration file as follows:
+
+```
+docker run -p 8080:8080 -v /home/mbmartinez/test/application.yml:/app/application.yml markmfreelancer/docker-based-logger-simulator:2.0
+```
+
 The following is the default configuration of the application:
 ```yaml
 configuration:
@@ -52,7 +66,14 @@ configuration:
 |DEVICE_NAME|The name returned by the ```GET /current_state``` endpoint as Device.Name|
 |DEVICE_MAC_ADDRESS|The mac address returned by the ```GET /current_state``` endpoint as Device.MAC|
 
-In order to override these properties, an external configuration file must be passed to the docker image at runtime as follows:
+Changing the values of these properties will change the output of the affected endpoints.
+
+## To run with all configuration options
+The above commands can be combined to run the docker image with all configuration options activated as follows:
+```
+docker run -p 8080:8080 -e DEVICE_STATUS=NOK -e DEVICE_UUID=Image15 -v /home/mbmartinez/test/data.json:/data.json -v /home/mbmartinez/test/application.yml:/app/application.yml markmfreelancer/docker-based-logger-simulator:2.0
+```
+As before, the ```/home/mbmartinez/test``` must be replaced with your own absolute path with the locations of ```data.json``` and ```application.yml```.
 
 ## To build
 - Required software
@@ -92,13 +113,8 @@ curl localhost:8080/logger_status
 Expected response:
 ```json
 {
-  "macAddresses": {
-    "wifi1": "4C-1D-96-5F-53-3A",
-    "wifi2": "4E-1D-96-5F-53-39",
-    "wifi0":"4C-1D-96-5F-53-39",
-    "eth1":"00-FF-51-0E-32-61",
-    "eth0":"F8-75-A4-1D-74-3B"
-  }
+    "id": "6574444a-5b10-4b0b-9458-682e51736733",
+    "status": "OK"
 }
 ```
 
@@ -109,16 +125,148 @@ curl localhost:8080/current_state
 Expected response:
 ```json
 {
-  "status": "Normal",
-  "pressure": 12.0,
-  "volume": 80.0,
-  "weight": 16.0,
-  "temperature": 35.5
+    "CurrentState": {
+        "DigitalInput": [
+            {
+                "Name": "DI1",
+                "Value": "0"
+            },
+            {
+                "Name": "DI2",
+                "Value": "0"
+            },
+            {
+                "Name": "DI3",
+                "Value": "0"
+            },
+            {
+                "Name": "DI4",
+                "Value": "0"
+            },
+            {
+                "Name": "DI5",
+                "Value": "0"
+            },
+            {
+                "Name": "DI6",
+                "Value": "0"
+            },
+            {
+                "Name": "DI7",
+                "Value": "0"
+            },
+            {
+                "Name": "DI8",
+                "Value": "0"
+            },
+            {
+                "Name": "DI9",
+                "Value": "0"
+            },
+            {
+                "Name": "DI10",
+                "Value": "0"
+            },
+            {
+                "Name": "DI11",
+                "Value": "0"
+            },
+            {
+                "Name": "DI12",
+                "Value": "0"
+            },
+            {
+                "Name": "DI13",
+                "Value": "0"
+            },
+            {
+                "Name": "DI14",
+                "Value": "0"
+            },
+            {
+                "Name": "DI15",
+                "Value": "0"
+            }
+        ],
+        "AnalogInput": [
+            {
+                "Name": "AI1",
+                "Value": "94"
+            },
+            {
+                "Name": "AI2",
+                "Value": "817"
+            },
+            {
+                "Name": "AI3",
+                "Value": "0"
+            },
+            {
+                "Name": "AI4",
+                "Value": "0"
+            },
+            {
+                "Name": "AI5",
+                "Value": "0"
+            },
+            {
+                "Name": "AI6",
+                "Value": "0"
+            },
+            {
+                "Name": "AI7",
+                "Value": "0"
+            }
+        ],
+        "TemperatureInput": [
+            {
+                "Name": "TI1",
+                "Value": ""
+            },
+            {
+                "Name": "TI2",
+                "Value": ""
+            },
+            {
+                "Name": "TI3",
+                "Value": ""
+            },
+            {
+                "Name": "TI4",
+                "Value": ""
+            },
+            {
+                "Name": "TI5",
+                "Value": ""
+            },
+            {
+                "Name": "TI6",
+                "Value": ""
+            },
+            {
+                "Name": "TI7",
+                "Value": ""
+            }
+        ],
+        "Device": {
+            "Name": "SIMULATION_LOGGER",
+            "MAC": "75-10-0B-0E-C8-0E"
+        }
+    }
 }
 ```
 3. POST /new_shifts
 ```
-curl -X POST localhost:8080/new_shifts -H 'Content-Type: application/json' -d '{}'
+curl --location --request POST 'http://localhost:8080/new_shifts' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "shiftOneStart": "01:00",
+  "shiftOneEnd": "02:00",
+  "shiftTwoStart": "03:00",
+  "shiftTwoEnd": "04:00",
+  "shiftThreeStart": "23:00",
+  "shiftThreeEnd": "02:30"
+}'
 ```
 Expected response:
 ```json
@@ -128,11 +276,15 @@ Expected response:
 ```
 4. POST /new_timing
 ```
-curl -X POST localhost:8080/new_timing -H 'Content-Type: application/json' -d '{}'
+curl --location --request POST 'http://172.16.0.10:8080/new_timing' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+  "newTiming": 10000
+}'
 ```
 Expected response:
 ```json
 {
-  "status":"OK"
+  "status": "OK"
 }
 ```
