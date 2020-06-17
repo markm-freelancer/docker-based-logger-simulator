@@ -288,3 +288,28 @@ Expected response:
   "status": "OK"
 }
 ```
+## Sample external files
+### data.json
+```json
+{
+  "shiftOneStart" : "01:00",
+  "shiftOneEnd" : "02:00",
+  "shiftTwoStart" : "03:00",
+  "shiftTwoEnd" : "04:00",
+  "shiftThreeStart" : "23:00",
+  "shiftThreeEnd" : "02:30",
+  "interval" : "10000",
+  "GENERATED_VALUE_TWO" : "118",
+  "GENERATED_VALUE_ONE" : "205"
+}
+```
+### application.yml
+```yaml
+configuration:
+  data-filepath: data.json
+  generator-interval: 1000
+  DEVICE_UUID: 6574444a-5b10-4b0b-9458-682e51736733
+  DEVICE_STATUS: OK
+  DEVICE_NAME: SIMULATION_LOGGER
+  DEVICE_MAC_ADDRESS: 75-10-0B-0E-C8-0E
+```
