@@ -55,7 +55,7 @@ public class ScheduledValueGenerator {
         long v1 = RNG.nextLong(0L, 1000L);
         long v2 = RNG.nextLong(0, 1000L);
         dataRepository.putData(KEY_GENERATED_VALUE_ONE, String.valueOf(v1));
-        dataRepository.putData(KEY_GENERATED_VALUE_ONE, String.valueOf(v2));
+        dataRepository.putData(KEY_GENERATED_VALUE_TWO, String.valueOf(v2));
         try {
             dataRepository.saveData();
         } catch (IOException e) {
