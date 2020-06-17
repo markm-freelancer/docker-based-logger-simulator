@@ -65,8 +65,8 @@ public class LoggerServiceImpl implements LoggerService {
         currentState.setDigitalInput(digitalInput);
 
         Maplike analogInput = new Maplike();
-        analogInput.add(analogInput.new Entrylike("AI1", dataRepository.getData("GENERATED_VALUE_ONE")));
-        analogInput.add(analogInput.new Entrylike("AI2", dataRepository.getData("GENERATED_VALUE_TWO")));
+        analogInput.add(analogInput.new Entrylike("AI1", dataRepository.getData(KEY_GENERATED_VALUE_ONE)));
+        analogInput.add(analogInput.new Entrylike("AI2", dataRepository.getData(KEY_GENERATED_VALUE_TWO)));
         for (int i = 3; i < 8; i++) {
             Entrylike entry = analogInput.new Entrylike("AI" + i, "0");
             analogInput.add(entry);
@@ -81,7 +81,7 @@ public class LoggerServiceImpl implements LoggerService {
         currentState.setTemperatureInput(temperatureInput);
 
         Device device = response.new Device();
-        device.setName("SIMULATION_LOGGER");
+        device.setName(dataRepository.getConfigurationProperty("DEVICE_NAME"));
         device.setMac(dataRepository.getConfigurationProperty("DEVICE_MAC_ADDRESS"));
         currentState.setDevice(device);
 
