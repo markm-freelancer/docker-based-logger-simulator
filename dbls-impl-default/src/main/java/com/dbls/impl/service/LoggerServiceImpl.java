@@ -34,10 +34,19 @@ public class LoggerServiceImpl implements LoggerService {
     @Autowired
     private PersistentDataRepository dataRepository;
 
+    @Autowired
+    private ScheduledValueGenerator scheduledValueGenerator;
+
     @Override
     public LoggerStatusResponse loggerStatus() {
-        String uuid = dataRepository.getConfigurationProperty("DEVICE_UUID");
-        String status = dataRepository.getConfigurationProperty("DEVICE_STATUS");
+        String uuid = System.getenv("DEVICE_UUID");
+        if (null == uuid) {
+            uuid = dataRepository.getConfigurationProperty("DEVICE_UUID");
+        }
+        String status = System.getenv("DEVICE_STATUS");
+        if (null == status) {
+            status = dataRepository.getConfigurationProperty("DEVICE_STATUS");
+        }
         return new LoggerStatusResponse(uuid, status);
     }
 
@@ -73,7 +82,7 @@ public class LoggerServiceImpl implements LoggerService {
 
         Device device = response.new Device();
         device.setName("SIMULATION_LOGGER");
-        device.setMAC(dataRepository.getConfigurationProperty("DEVICE_MAC_ADDRESS"));
+        device.setMac(dataRepository.getConfigurationProperty("DEVICE_MAC_ADDRESS"));
         currentState.setDevice(device);
 
         return response;
@@ -130,7 +139,7 @@ public class LoggerServiceImpl implements LoggerService {
         if (interval < 1000 || interval > 10000) {
             throw new IllegalTimingException("Timing must be in the range 1000 - 10000 ms");
         }
-
+        scheduledValueGenerator.updateInterval(interval);
         dataRepository.putData("interval", String.valueOf(request.getNewTiming()));
         NewTimingResponse response = new NewTimingResponse();
         response.setStatus("OK");

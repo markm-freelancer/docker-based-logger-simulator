@@ -11,6 +11,12 @@
   <name>Docker Based Logger Simulator :: Default Impl</name>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-math3 -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math3</artifactId>
+      <version>3.6.1</version>
+    </dependency>
     <dependency>
       <groupId>docker-based-logger-simulator</groupId>
       <artifactId>dbls-api</artifactId>

@@ -73,8 +73,7 @@ public class PersistentDataRepositoryImpl implements PersistentDataRepository {
     }
 
     @Override
-    public void saveData() throws IOException {
-        log.info("Saving data to file. absolute path={}", Paths.get(filePath).toAbsolutePath().toString());
+    public synchronized void saveData() throws IOException {
         String dataStr = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
         FileWriter fileWriter = new FileWriter(filePath);
         fileWriter.write(dataStr);

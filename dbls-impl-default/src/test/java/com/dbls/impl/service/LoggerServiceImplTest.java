@@ -55,7 +55,7 @@ public class LoggerServiceImplTest {
         assertEquals(currentState.getTemperatureInput().get("TI1").getValue(), "");
 
         assertEquals("SIMULATION_LOGGER", currentState.getDevice().getName());
-        assertEquals("75-10-0B-0E-C8-0E", currentState.getDevice().getMAC());
+        assertEquals("75-10-0B-0E-C8-0E", currentState.getDevice().getMac());
     }
 
     @Test
