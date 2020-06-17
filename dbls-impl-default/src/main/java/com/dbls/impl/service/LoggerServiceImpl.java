@@ -58,7 +58,7 @@ public class LoggerServiceImpl implements LoggerService {
         response.setCurrentState(currentState);
 
         Maplike digitalInput = new Maplike();
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i < 17; i++) {
             Maplike.Entrylike entry = digitalInput.new Entrylike("DI" + i, "0");
             digitalInput.add(entry);
         }
@@ -67,14 +67,14 @@ public class LoggerServiceImpl implements LoggerService {
         Maplike analogInput = new Maplike();
         analogInput.add(analogInput.new Entrylike("AI1", dataRepository.getData(KEY_GENERATED_VALUE_ONE)));
         analogInput.add(analogInput.new Entrylike("AI2", dataRepository.getData(KEY_GENERATED_VALUE_TWO)));
-        for (int i = 3; i < 8; i++) {
+        for (int i = 3; i < 9; i++) {
             Entrylike entry = analogInput.new Entrylike("AI" + i, "0");
             analogInput.add(entry);
         }
         currentState.setAnalogInput(analogInput);
 
         Maplike temperatureInput = new Maplike();
-        for (int i = 1; i < 8; i++) {
+        for (int i = 1; i < 9; i++) {
             Maplike.Entrylike entry = temperatureInput.new Entrylike("TI" + i, "");
             temperatureInput.add(entry);
         }

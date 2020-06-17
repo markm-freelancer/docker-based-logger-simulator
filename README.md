@@ -186,6 +186,10 @@ Expected response:
             {
                 "Name": "DI15",
                 "Value": "0"
+            },
+            {
+                "Name": "DI16",
+                "Value": "0"
             }
         ],
         "AnalogInput": [
@@ -217,6 +221,10 @@ Expected response:
                 "Name": "AI7",
                 "Value": "0"
             }
+            {
+                "Name": "AI8",
+                "Value": "0"
+            }
         ],
         "TemperatureInput": [
             {
@@ -245,6 +253,10 @@ Expected response:
             },
             {
                 "Name": "TI7",
+                "Value": ""
+            }
+            {
+                "Name": "TI8",
                 "Value": ""
             }
         ],
